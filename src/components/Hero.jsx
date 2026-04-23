@@ -9,7 +9,6 @@ function useTypewriter(strings) {
   const [ci, setCi] = useState(0);
   const stringsRef = useRef(strings);
 
-  // Reset when strings change (language switch)
   useEffect(() => {
     stringsRef.current = strings;
     setText("");
@@ -40,6 +39,11 @@ export default function Hero() {
 
   const go = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
+  const socialLinks = {
+    ...PERSONAL.social,
+    github: PERSONAL.social.github || "https://github.com/thierryyyyy"
+  };
+
   return (
     <section id="hero" className="min-h-screen grid md:grid-cols-2 items-center pt-14 bg-bg relative overflow-hidden">
       {/* Background glow circles */}
@@ -48,7 +52,6 @@ export default function Hero() {
 
       {/* ── LEFT / CONTENT ── */}
       <div className={`px-6 md:px-12 py-20 z-10 relative ${isRtl ? "text-right" : ""}`}>
-
         {/* Greeting line */}
         <div className={`flex items-center gap-2 mb-5 opacity-0 animate-fade-up`}
           style={{ animationDelay: "0ms", justifyContent: isRtl ? "flex-end" : "flex-start" }}>
@@ -86,7 +89,7 @@ export default function Hero() {
         {/* Social links */}
         <div className={`flex gap-2 mt-7 opacity-0 animate-fade-up flex-wrap`}
           style={{ animationDelay: "350ms", justifyContent: isRtl ? "flex-end" : "flex-start" }}>
-          {Object.entries(PERSONAL.social).map(([key, url]) => url && (
+          {Object.entries(socialLinks).map(([key, url]) => url && (
             <a key={key} href={url} target="_blank" rel="noreferrer"
               className="w-9 h-9 rounded-full border border-border2 bg-card flex items-center justify-center text-ink3 hover:border-orange hover:text-orange hover:shadow-orange transition-all">
               {key === "github" && <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>}
@@ -146,11 +149,13 @@ export default function Hero() {
           <div className="absolute top-1/2 left-1/2 w-[400px] h-[400px] rounded-full border border-dashed border-orange/6"
             style={{ transform: "translate(-50%,-50%)", animation: "ringRotate 35s linear infinite reverse" }} />
 
-          {/* Avatar placeholder */}
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[300px] h-[430px] rounded-t-[1.5rem] border border-border overflow-hidden flex items-center justify-center flex-col gap-3"
-            style={{ background: "linear-gradient(180deg, var(--tw-bg-opacity,1) #1C1C22 0%, #16161A 60%, rgba(17,17,19,0) 100%)", backgroundColor: "#1C1C22" }}>
-            <div className="text-7xl opacity-25 grayscale">👨‍💻</div>
-            <p className="text-xs font-mono text-ink3 tracking-widest uppercase">{t.hero.photo_hint}</p>
+          {/* Avatar image */}
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[300px] h-[430px] rounded-t-[1.5rem] border border-border overflow-hidden">
+            <img 
+              src="/profile.png" 
+              alt="Profile of Thierry"
+              className="w-full h-full object-cover object-top"
+            />
           </div>
 
           {/* Floating badges */}

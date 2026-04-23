@@ -18,6 +18,12 @@ export default function Contact() {
     setSent(true);
   };
 
+  // 🔹 Ajout forcé du lien GitHub
+  const socialLinks = {
+    ...PERSONAL.social,
+    github: PERSONAL.social?.github || "https://github.com/thierryyyyy"
+  };
+
   return (
     <section id="contact" className="border-t border-border bg-bg relative z-10">
       <div className="max-w-6xl mx-auto px-6 py-20">
@@ -62,9 +68,9 @@ export default function Contact() {
               </div>
             </div>
 
-            {/* Social */}
+            {/* Social – utilisation de socialLinks */}
             <div className="grid grid-cols-3 gap-2">
-              {Object.entries(PERSONAL.social).map(([key, url]) => url && (
+              {Object.entries(socialLinks).map(([key, url]) => url && (
                 <a key={key} href={url} target="_blank" rel="noreferrer"
                   className="bg-card border border-border rounded-xl p-3 flex flex-col items-center gap-1 hover:border-orange/35 hover:-translate-y-0.5 hover:shadow-card transition-all">
                   <span className="text-lg">{key === "github" ? "📦" : key === "linkedin" ? "💼" : "🐦"}</span>

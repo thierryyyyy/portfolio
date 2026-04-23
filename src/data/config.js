@@ -16,7 +16,7 @@ export const PERSONAL = {
   availability:  true,
   cvUrl:         "/cv.pdf",
   social: {
-    github:   "https://github.com/",
+    github:   "https://github.com/thierryyyyy",    // ✅ modifié
     linkedin: "https://linkedin.com/in/",
     email:    "mailto:thierryhariniaina3@gmail.com",
   },
@@ -29,9 +29,7 @@ export const SKILLS = [
   { name: "Vue.js",        level: 3, category: "Frontend" },
   { name: "JavaScript",    level: 4, category: "Frontend" },
   { name: "TypeScript",    level: 3, category: "Frontend" },
-  { name: "HTML5/CSS3",    level: 5, category: "Frontend" },
   { name: "Bootstrap",     level: 4, category: "Frontend" },
-  { name: "jQuery",        level: 4, category: "Frontend" },
   { name: "Django",        level: 4, category: "Backend"  },
   { name: "Node.js",       level: 3, category: "Backend"  },
   { name: "Express.js",    level: 3, category: "Backend"  },
