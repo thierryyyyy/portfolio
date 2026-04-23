@@ -14,9 +14,9 @@ export const PERSONAL = {
   location:      "Ambolofoty, Toliara, Madagascar",
   locationShort: "Toliara, Madagascar",
   availability:  true,
-  cvUrl:         "/cv.pdf",
+  cvUrl:         "/CV.pdf",  // ✅ Modifié : CV.pdf avec majuscule
   social: {
-    github:   "https://github.com/thierryyyyy",    // ✅ modifié
+    github:   "https://github.com/thierryyyyy",
     linkedin: "https://linkedin.com/in/",
     email:    "mailto:thierryhariniaina3@gmail.com",
   },
