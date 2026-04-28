@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { PERSONAL } from "../data/config";
 import { useI18n } from "../i18n";
+import emailjs from "@emailjs/browser";
 
 export default function Contact() {
   const { t, dir } = useI18n();
@@ -8,14 +9,47 @@ export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  // Vos identifiants EmailJS
+  const EMAILJS_SERVICE_ID = "service_jm1q0pa";
+  const EMAILJS_TEMPLATE_ID = "template_ay73324";
+  const EMAILJS_PUBLIC_KEY = "nW_bgOvDeIIacSNlG";
 
   const onChange = e => setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+
   const onSubmit = async e => {
     e.preventDefault();
     setLoading(true);
-    await new Promise(r => setTimeout(r, 1100));
-    setLoading(false);
-    setSent(true);
+    setError("");
+
+    try {
+      const templateParams = {
+        from_name: form.name,
+        from_email: form.email,
+        subject: form.subject,
+        message: form.message,
+        to_email: PERSONAL.email,
+      };
+
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        templateParams,
+        EMAILJS_PUBLIC_KEY
+      );
+      
+      setSent(true);
+      setForm({ name: "", email: "", subject: "", message: "" });
+      
+      // Réinitialiser l'état "envoyé" après 5 secondes
+      setTimeout(() => setSent(false), 5000);
+    } catch (err) {
+      console.error("Erreur EmailJS:", err);
+      setError("Erreur lors de l'envoi. Veuillez réessayer.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   // 🔹 Ajout forcé du lien GitHub
@@ -68,7 +102,7 @@ export default function Contact() {
               </div>
             </div>
 
-            {/* Social – utilisation de socialLinks */}
+            {/* Social */}
             <div className="grid grid-cols-3 gap-2">
               {Object.entries(socialLinks).map(([key, url]) => url && (
                 <a key={key} href={url} target="_blank" rel="noreferrer"
@@ -125,6 +159,9 @@ export default function Contact() {
                     className="w-full px-3.5 py-2.5 bg-bg3 border border-border2 rounded-xl text-sm text-ink placeholder-ink3/60 focus:outline-none focus:border-orange/50 focus:shadow-[0_0_0_3px_rgba(255,95,31,.08)] transition-all resize-none"
                     dir={dir} />
                 </div>
+                {error && (
+                  <p className="text-xs text-red-500 text-center">{error}</p>
+                )}
                 <button type="submit" disabled={loading}
                   className="w-full py-3 bg-orange text-white text-sm font-semibold rounded-xl shadow-orange hover:bg-orange2 hover:shadow-orange-lg transition-all disabled:opacity-60 flex items-center justify-center gap-2">
                   {loading

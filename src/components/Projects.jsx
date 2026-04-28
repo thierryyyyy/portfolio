@@ -12,6 +12,7 @@ const PROJ_VISUALS = {
     github: null,
     featured: true,
     cat: "Mobile",
+    screenshots: ["/projects/sigap/screenshot1.jpg", "/projects/sigap/screenshot2.jpg", "/projects/sigap/screenshot3.jpg"],
   },
   mndpt: {
     bg: "linear-gradient(135deg,#0D2A1B,#1A3D2A)",
@@ -22,6 +23,7 @@ const PROJ_VISUALS = {
     github: null,
     featured: true,
     cat: "Web",
+    screenshots: ["/projects/mndpt/screenshot1.jpg", "/projects/mndpt/screenshot2.jpg"],
   },
   banque: {
     bg: "linear-gradient(135deg,#1A0D2E,#2E1A44)",
@@ -32,6 +34,7 @@ const PROJ_VISUALS = {
     github: null,
     featured: false,
     cat: "Web",
+    screenshots: ["/projects/banque/screenshot1.jpg"],
   },
   ranomafana: {
     bg: "linear-gradient(135deg,#1A2A0D,#2A3D1A)",
@@ -42,16 +45,49 @@ const PROJ_VISUALS = {
     github: null,
     featured: false,
     cat: "Web",
+    screenshots: ["/projects/ranomafana/screenshot1.jpg"],
+  },
+  rotransport: {
+    bg: "linear-gradient(135deg,#0D2B2E,#1A4A4E)",
+    accent: "#14B8A6",
+    icon: "🚛",
+    tags: ["Python", "FastAPI", "JavaScript", "HTML5", "CSS3", "Recherche Opérationnelle"],
+    live: null,
+    github: null,
+    featured: false,
+    cat: "Web",
+    screenshots: [
+      "/projects/rotransport/home.png",
+      "/projects/rotransport/balas.png",
+      "/projects/rotransport/minico.png"
+    ],
   },
 };
 
+// Composant modale avec carrousel d'images
 function Modal({ proj, vis, onClose }) {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const screenshots = vis?.screenshots || [];
+
+  const nextImage = (e) => {
+    e.stopPropagation();
+    setCurrentImageIndex((prev) => (prev + 1) % screenshots.length);
+  };
+
+  const prevImage = (e) => {
+    e.stopPropagation();
+    setCurrentImageIndex((prev) => (prev - 1 + screenshots.length) % screenshots.length);
+  };
+
   if (!proj || !vis) return null;
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md"
       onClick={onClose}>
-      <div className="w-full max-w-lg bg-bg3 border border-border2 rounded-2xl overflow-hidden shadow-[0_32px_80px_rgba(0,0,0,.6)] animate-fade-up"
+      <div className="w-full max-w-2xl bg-bg3 border border-border2 rounded-2xl overflow-hidden shadow-[0_32px_80px_rgba(0,0,0,.6)] animate-fade-up"
         onClick={e => e.stopPropagation()}>
+        
+        {/* Header */}
         <div className="flex items-start justify-between gap-3 p-5 border-b border-border">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl"
@@ -66,8 +102,50 @@ function Modal({ proj, vis, onClose }) {
             ×
           </button>
         </div>
-        <div className="p-5 space-y-4">
+
+        {/* Screenshots Gallery */}
+        {screenshots.length > 0 && (
+          <div className="relative bg-bg2">
+            <div className="relative aspect-video">
+              <img 
+                src={screenshots[currentImageIndex]} 
+                alt={`Capture d'écran ${currentImageIndex + 1} de ${proj.title}`}
+                className="w-full h-full object-cover object-top"
+              />
+              
+              {/* Navigation buttons */}
+              {screenshots.length > 1 && (
+                <>
+                  <button 
+                    onClick={prevImage}
+                    className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 hover:bg-black/70 flex items-center justify-center text-white transition-all"
+                  >
+                    ◀
+                  </button>
+                  <button 
+                    onClick={nextImage}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 hover:bg-black/70 flex items-center justify-center text-white transition-all"
+                  >
+                    ▶
+                  </button>
+                </>
+              )}
+            </div>
+            
+            {/* Image counter */}
+            {screenshots.length > 1 && (
+              <div className="absolute bottom-2 right-2 px-2 py-1 rounded-md bg-black/50 text-white text-xs">
+                {currentImageIndex + 1} / {screenshots.length}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Content */}
+        <div className="p-5 space-y-4 max-h-[400px] overflow-y-auto">
           <p className="text-sm text-ink2 leading-relaxed">{proj.longDesc}</p>
+          
+          {/* Metrics */}
           <div className="grid grid-cols-3 gap-2">
             {proj.metrics.map((m, i) => (
               <div key={i} className="bg-card border border-border rounded-xl p-3 text-center">
@@ -76,11 +154,15 @@ function Modal({ proj, vis, onClose }) {
               </div>
             ))}
           </div>
+          
+          {/* Tags */}
           <div className="flex flex-wrap gap-1.5">
             {vis.tags.map(t => (
               <span key={t} className="px-2.5 py-1 bg-card border border-border rounded-md text-xs font-mono text-ink3">{t}</span>
             ))}
           </div>
+          
+          {/* Links */}
           <div className="flex gap-2 pt-1">
             {vis.live ? (
               <a href={vis.live} target="_blank" rel="noreferrer"
@@ -153,23 +235,33 @@ export default function Projects() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {filtered.map(p => {
               const tagsToShow = p.featured && filter === "all" ? 6 : 4;
+              const hasScreenshots = p.screenshots && p.screenshots.length > 0;
+              
               return (
                 <div key={p.id} onClick={() => setModal(p.id)}
                   className={`group relative bg-card border border-border rounded-2xl overflow-hidden cursor-pointer transition-all hover:-translate-y-1 hover:border-orange/35 hover:shadow-card ${
                     p.featured && filter === "all" ? "lg:col-span-2" : ""
                   }`}>
 
-                  {/* Banner */}
+                  {/* Banner avec aperçu de l'image si disponible */}
                   <div className="relative h-36 flex items-center justify-center text-5xl overflow-hidden"
                     style={{ background: p.bg }}>
+                    {/* Afficher la première capture d'écran en miniature si disponible */}
+                    {hasScreenshots && (
+                      <img 
+                        src={p.screenshots[0]} 
+                        alt={`Aperçu de ${p.title}`}
+                        className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-60 transition-opacity"
+                      />
+                    )}
                     <div className="absolute inset-0"
                       style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px)", backgroundSize: "28px 28px" }} />
-                    <span className="relative z-10">{p.icon}</span>
-                    <div className="absolute top-3 left-3 flex gap-1.5">
+                    <span className="relative z-10 text-5xl">{p.icon}</span>
+                    <div className="absolute top-3 left-3 flex gap-1.5 z-10">
                       {p.featured && <span className="px-2 py-0.5 bg-orange/15 border border-orange/25 rounded text-[10px] font-mono text-orange">{t.projects.featured}</span>}
                       <span className="px-2 py-0.5 bg-white/6 border border-white/10 rounded text-[10px] font-mono text-ink3">{p.cat}</span>
                     </div>
-                    <div className="absolute top-3 right-3 w-7 h-7 rounded-full bg-white/6 border border-white/10 flex items-center justify-center text-ink3 text-xs opacity-0 group-hover:opacity-100 transition-opacity">↗</div>
+                    <div className="absolute top-3 right-3 w-7 h-7 rounded-full bg-white/6 border border-white/10 flex items-center justify-center text-ink3 text-xs opacity-0 group-hover:opacity-100 transition-opacity z-10">↗</div>
                   </div>
 
                   {/* Body */}
@@ -197,6 +289,13 @@ export default function Projects() {
                         <span className="text-[10px] text-ink3 px-1 self-center">+{p.tags.length - tagsToShow}</span>
                       )}
                     </div>
+                    
+                    {/* Indicateur de présence de captures */}
+                    {hasScreenshots && (
+                      <div className="mt-2 text-[10px] text-ink3 flex items-center gap-1">
+                        📸 {p.screenshots.length} capture(s)
+                      </div>
+                    )}
                   </div>
 
                   <div className="h-0.5 w-0 group-hover:w-full transition-all duration-500 mx-auto"

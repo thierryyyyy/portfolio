@@ -26,7 +26,7 @@ const fr = {
     cta_cv: "Télécharger CV",
     available: "Disponible",
     stats: [
-      { value: "4+", label: "Projets livrés" },
+      { value: "5+", label: "Projets livrés" },
       { value: "Master 1", label: "Niveau d'étude" },
       { value: "5+", label: "Technologies" },
     ],
@@ -101,6 +101,14 @@ const fr = {
         desc: "Application web de gestion des opérations bancaires — clients, comptes, transactions et reporting.",
         longDesc: "Projet universitaire réalisé en 2022. Gestion complète des clients, comptes courants et d'épargne, virements, dépôts, retraits et génération de rapports.",
         metrics: [{ v: "PHP", l: "Backend" }, { v: "MySQL", l: "BDD" }, { v: "2022", l: "Année" }],
+      },
+      {
+        id: "rotransport",
+        subtitle: "Web · Recherche Opérationnelle",
+        title: "RO Transport",
+        desc: "Application web interactive pour résoudre les problèmes de transport en Recherche Opérationnelle. Méthodes Balas-Hammer et MINICO.",
+        longDesc: "Outil pédagogique permettant de saisir les données d’un problème de transport, définir le nombre d’origines et destinations, calculer automatiquement les solutions via Python (FastAPI/Flask) et comparer plusieurs méthodes de résolution (Balas-Hammer, MINICO) avec affichage du coût total optimal.",
+        metrics: [{ v: "Python", l: "Backend" }, { v: "FastAPI", l: "API" }, { v: "2", l: "Méthodes" }],
       },
       {
         id: "ranomafana",
