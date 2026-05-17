@@ -15,13 +15,13 @@ const fr = {
   hero: {
     greeting: "Bonjour, je suis",
     typedStrings: [
-      "Développeur Web & Mobile",
-      "React · Django · Node.js",
+      "Développeur Web & Mobile Full-Stack",
+      "Expert React · Django · Node.js · PHP",
+      "Créateur d'Expériences Pixel-Perfect",
       "Master 1 Informatique",
-      "Diplômé janv. 2026",
       "Disponible pour missions",
     ],
-    bio: "Je viens d'obtenir ma Licence 3 en Informatique (janvier 2026) et je poursuis actuellement un Master 1. Passionné par le développement web et mobile, je construis des applications utiles et bien pensées — du backend à l'interface.",
+    bio: "Développeur créatif à l'intersection du design et de l'ingénierie. Je transforme vos idées en interfaces pixel-perfect avec React, Django, Node.js et PHP. Mon engagement : allier code scalable et UX d'excellence pour un impact business immédiat.",
     cta_hire: "Me contacter",
     cta_cv: "Télécharger CV",
     available: "Disponible",
@@ -153,8 +153,8 @@ const fr = {
         role: "Master 1 Informatique",
         company: "Université / École (à préciser)",
         period: "Janvier 2026 — En cours",
-        desc: "Première année de Master en Informatique. Approfondissement en développement avancé, architecture logicielle, IA, et gestion de projets complexes.",
-        tags: ["Architecture logicielle", "IA", "Projets avancés", "Recherche"],
+        desc: "Première année de Master en Informatique. Approfondissement en développement avancé, architecture logicielle et gestion de projets complexes.",
+        tags: ["Architecture logicielle", "Projets avancés", "Recherche"],
         current: true,
       },
       {
