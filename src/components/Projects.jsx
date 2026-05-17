@@ -12,7 +12,7 @@ const PROJ_VISUALS = {
     github: null,
     featured: true,
     cat: "Mobile",
-    screenshots: ["/projects/sigap/screenshot1.jpg", "/projects/sigap/screenshot2.jpg", "/projects/sigap/screenshot3.jpg"],
+    screenshots: ["/projects/sigap/map1.jpg", "/projects/sigap/map2.jpg", "/projects/sigap/validation.jpg"],
   },
   mndpt: {
     bg: "linear-gradient(135deg,#0D2A1B,#1A3D2A)",
