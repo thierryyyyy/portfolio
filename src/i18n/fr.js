@@ -110,6 +110,14 @@ const fr = {
         longDesc: "Application desktop Java (Swing) avec architecture client-serveur. Communication par sockets TCP, base de donn\u00E9es SQLite, gestion des modes connect\u00E9 et d\u00E9connect\u00E9 (envoi diff\u00E9r\u00E9 via fichiers XML), t\u00E9moin r\u00E9seau en temps r\u00E9el et CRUD complet sur la table CLIENT.",
         metrics: [{ v: "Java", l: "Backend" }, { v: "SQLite", l: "BDD" }, { v: "Sockets", l: "R\u00E9seau" }],
       },
+      {
+        id: "toliara-market",
+        subtitle: "Android \u00B7 Marketplace",
+        title: "Toliara Market",
+        desc: "Application Android de vente et revente d'articles bas\u00E9e \u00E0 Tul\u00E9ar. Design UI/UX compl\u00E8te sur Figma.",
+        longDesc: "Application mobile Android de type marketplace pour la vente et revente d'articles \u00E0 Toliara (Tul\u00E9ar, Madagascar). Conception UI/UX compl\u00E8te sur Figma avec un design moderne, cat\u00E9gories de produits, navigation intuitive et processus d'achat fluide.",
+        metrics: [{ v: "Figma", l: "Design UI/UX" }, { v: "Android", l: "Mobile" }, { v: "Market", l: "Marketplace" }],
+      },
     ],
   },
 

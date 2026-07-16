@@ -53,6 +53,20 @@ const PROJ_VISUALS = {
       "/projects/rotransport/minico.png",
     ],
   },
+  "toliara-market": {
+    bg: "linear-gradient(135deg,#1A0D2E,#2E1A4A)",
+    accent: "#8B5CF6",
+    icon: "\uD83D\uDED2",
+    tags: ["Android", "Figma", "UI/UX", "Marketplace", "Mobile"],
+    live: null,
+    github: null,
+    featured: false,
+    cat: "Mobile",
+    screenshots: [
+      "/projects/Tuléar-market/Tuléar-market (1).png",
+      "/projects/Tuléar-market/Tuléar-market (2).png",
+    ],
+  },
 };
 
 function Modal({ proj, vis, onClose }) {
@@ -338,13 +352,13 @@ function ProjectCard({ p, index, onClick, isFeatured, showMetrics, t }) {
       style={{ transitionDelay: `${index * 80}ms` }}>
 
       {/* Banner */}
-      <div className="relative h-44 overflow-hidden" style={{ background: p.bg }}>
+      <div className="relative h-32 overflow-hidden" style={{ background: p.bg }}>
         {hasScreenshots && (
           <img
             src={p.screenshots[hoverScreenshot]}
             alt={`Aper\u00E7u de ${p.title}`}
-            width="400" height="176" loading="lazy"
-            className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-65 transition-all duration-700 group-hover:scale-110"
+            width="400" height="128" loading="lazy"
+            className="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:opacity-55 transition-all duration-700 group-hover:scale-105"
           />
         )}
         <div className="absolute inset-0"
@@ -364,15 +378,15 @@ function ProjectCard({ p, index, onClick, isFeatured, showMetrics, t }) {
           <span className="px-2 py-0.5 bg-black/30 border border-white/10 rounded-lg text-[10px] font-mono text-white/70 backdrop-blur-sm">{p.cat}</span>
         </div>
 
-        <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/6 border border-white/10 flex items-center justify-center text-white/60 text-xs opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110 z-10">{"\u2197"}</div>
+        <div className="absolute top-3 right-3 w-7 h-7 rounded-full bg-white/6 border border-white/10 flex items-center justify-center text-white/60 text-xs opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110 z-10">{"\u2197"}</div>
 
-        <div className="absolute bottom-3 right-3 text-white/10 font-display text-5xl font-bold leading-none pointer-events-none z-10">
+        <div className="absolute bottom-2 right-3 text-white/10 font-display text-4xl font-bold leading-none pointer-events-none z-10">
           {String(index + 1).padStart(2, "0")}
         </div>
       </div>
 
       {/* Body */}
-      <div className="p-4">
+      <div className="p-4 pt-3.5">
         <div className="flex items-center gap-2 mb-1.5">
           <div className="w-7 h-7 rounded-lg flex items-center justify-center text-sm"
             style={{ background: `${p.accent}12`, border: `1px solid ${p.accent}20` }}>{p.icon}</div>
