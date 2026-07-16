@@ -1,25 +1,37 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useI18n, LANGUAGES } from "../i18n";
 
 export default function LangSwitcher() {
   const { lang, changeLang } = useI18n();
   const [open, setOpen] = useState(false);
   const ref = useRef();
-  const current = LANGUAGES.find(l => l.code === lang);
+  const btnRef = useRef();
+  const current = LANGUAGES.find((l) => l.code === lang);
 
   useEffect(() => {
-    const handler = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    const handler = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
+  const handleKeyDown = useCallback((e) => {
+    if (e.key === "Escape") {
+      setOpen(false);
+      btnRef.current?.focus();
+    }
+  }, []);
+
   return (
-    <div ref={ref} className="relative">
-      {/* Trigger button */}
+    <div ref={ref} className="relative" onKeyDown={handleKeyDown}>
       <button
-        onClick={() => setOpen(o => !o)}
+        ref={btnRef}
+        onClick={() => setOpen((o) => !o)}
+        aria-label="Changer de langue"
+        aria-expanded={open}
+        aria-haspopup="listbox"
         className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border2 bg-card text-ink2 hover:border-orange hover:text-orange transition-all text-sm font-mono"
-        title="Changer de langue / Change language"
       >
         <span>{current?.flag}</span>
         <span className="text-xs font-semibold tracking-wide">{current?.code.toUpperCase()}</span>
@@ -31,13 +43,14 @@ export default function LangSwitcher() {
         </svg>
       </button>
 
-      {/* Dropdown */}
       {open && (
-        <div className="absolute right-0 top-full mt-2 w-40 bg-card border border-border2 rounded-xl shadow-card overflow-hidden z-50 animate-fade-up">
-          {LANGUAGES.map(l => (
+        <div className="absolute right-0 top-full mt-2 w-40 bg-card border border-border2 rounded-xl shadow-card overflow-hidden z-50 animate-fade-up" role="listbox" aria-label="Langues disponibles">
+          {LANGUAGES.map((l) => (
             <button
               key={l.code}
               onClick={() => { changeLang(l.code); setOpen(false); }}
+              role="option"
+              aria-selected={lang === l.code}
               className={`w-full flex items-center gap-2.5 px-3.5 py-2.5 text-sm transition-all hover:bg-border/30 ${
                 lang === l.code
                   ? "text-orange bg-orange/5 font-medium"
@@ -53,9 +66,6 @@ export default function LangSwitcher() {
               )}
             </button>
           ))}
-          <div className="px-3.5 py-2 border-t border-border text-xs text-ink3 font-mono">
-            Auto-détection navigateur
-          </div>
         </div>
       )}
     </div>

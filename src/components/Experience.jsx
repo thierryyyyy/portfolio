@@ -14,8 +14,8 @@ export default function Experience() {
           {/* Left: pitch + bullet list */}
           <div>
             <div className="flex flex-col gap-2.5 mt-1">
-              {t.experience.bullets.map((b, i) => (
-                <div key={i} className="flex items-center gap-3 text-sm text-ink2">
+              {t.experience.bullets.map((b) => (
+                <div key={b} className="flex items-center gap-3 text-sm text-ink2">
                   <span className="text-orange font-mono">→</span>
                   {b}
                 </div>
@@ -26,7 +26,7 @@ export default function Experience() {
           {/* Right: timeline */}
           <div className="relative ps-8 border-s border-orange/30">
             {t.experience.items.map((e, i) => (
-              <div key={i} className={`group relative pb-8 ${i === t.experience.items.length - 1 ? "pb-0" : ""}`}>
+              <div key={e.role} className={`group relative pb-8 ${i === t.experience.items.length - 1 ? "pb-0" : ""}`}>
                 {/* Dot */}
                 <div className={`absolute -start-[1.15rem] top-1 w-[10px] h-[10px] rounded-full border-2 transition-all ${
                   e.current ? "bg-orange border-orange shadow-orange" : "bg-bg2 border-border2 group-hover:border-orange"

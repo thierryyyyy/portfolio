@@ -31,14 +31,10 @@ module.exports = {
       animation: {
         "fade-up": "fadeUp 0.6s ease forwards",
         "fade-in": "fadeIn 0.8s ease forwards",
-        float:     "float 4s ease-in-out infinite",
-        spin:      "spin .6s linear infinite",
       },
       keyframes: {
         fadeUp:  { from: { opacity: "0", transform: "translateY(24px)" }, to: { opacity: "1", transform: "translateY(0)" } },
         fadeIn:  { from: { opacity: "0" }, to: { opacity: "1" } },
-        float:   { "0%,100%": { transform: "translateY(0)" }, "50%": { transform: "translateY(-8px)" } },
-        spin:    { to: { transform: "rotate(360deg)" } },
       },
     },
   },

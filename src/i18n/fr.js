@@ -87,20 +87,12 @@ const fr = {
         metrics: [{ v: "GPS", l: "Géolocalisation" }, { v: "Multi", l: "Étapes" }, { v: "100%", l: "Fonctionnel" }],
       },
       {
-        id: "stock",
+        id: "mndpt",
         subtitle: "Web · Stage MNDPT",
         title: "Gestion de Stock",
         desc: "Application web de gestion des consommables informatiques et fournitures de bureau pour le Ministère. Validation multi-niveaux selon les rôles.",
         longDesc: "Développée lors de mon stage au MNDPT (août–nov. 2024). Suivi des demandes de matériel avec validation hiérarchique par rôles, tableaux de bord et historique des mouvements de stock.",
         metrics: [{ v: "Django", l: "Backend" }, { v: "MySQL", l: "Base de données" }, { v: "Multi", l: "Rôles" }],
-      },
-      {
-        id: "bank",
-        subtitle: "Web · Projet universitaire",
-        title: "Gestion Bancaire",
-        desc: "Application web de gestion des opérations bancaires — clients, comptes, transactions et reporting.",
-        longDesc: "Projet universitaire réalisé en 2022. Gestion complète des clients, comptes courants et d'épargne, virements, dépôts, retraits et génération de rapports.",
-        metrics: [{ v: "PHP", l: "Backend" }, { v: "MySQL", l: "BDD" }, { v: "2022", l: "Année" }],
       },
       {
         id: "rotransport",
@@ -111,12 +103,12 @@ const fr = {
         metrics: [{ v: "Python", l: "Backend" }, { v: "FastAPI", l: "API" }, { v: "2", l: "Méthodes" }],
       },
       {
-        id: "ranomafana",
-        subtitle: "Web · Projet personnel",
-        title: "Parc Ranomafana",
-        desc: "Site vitrine pour le Parc National Ranomafana — présentation des espèces, activités et informations touristiques.",
-        longDesc: "Premier projet web personnel réalisé en 2021. Site vitrine statique présentant le Parc National Ranomafana (Madagascar), ses espèces endémiques, activités de randonnée et informations pratiques.",
-        metrics: [{ v: "HTML", l: "Frontend" }, { v: "CSS", l: "Design" }, { v: "2021", l: "Année" }],
+        id: "websockets-java",
+        subtitle: "Java \u00B7 Application lourde",
+        title: "Websockets Java",
+        desc: "Application lourde client-serveur en Java avec communication par sockets, mode connect\u00E9/d\u00E9connect\u00E9 et stockage XML.",
+        longDesc: "Application desktop Java (Swing) avec architecture client-serveur. Communication par sockets TCP, base de donn\u00E9es SQLite, gestion des modes connect\u00E9 et d\u00E9connect\u00E9 (envoi diff\u00E9r\u00E9 via fichiers XML), t\u00E9moin r\u00E9seau en temps r\u00E9el et CRUD complet sur la table CLIENT.",
+        metrics: [{ v: "Java", l: "Backend" }, { v: "SQLite", l: "BDD" }, { v: "Sockets", l: "R\u00E9seau" }],
       },
     ],
   },
@@ -202,6 +194,7 @@ const fr = {
     response_value: "Sous 24 heures",
     available_title: "Disponible",
     available_desc: "Ouvert aux stages, projets freelance et opportunités.",
+    form_error: "Erreur lors de l'envoi. Veuillez réessayer.",
     form: {
       name: "Nom",
       email: "Email",
@@ -218,6 +211,13 @@ const fr = {
       new: "Nouveau message",
     },
   },
+
+  lang_switcher: {
+    auto_detect: "Auto-détection navigateur",
+  },
+
+  projects_private: "Projet privé / code non public",
+  screenshot_count: (n) => `${n} capture(s)`,
 
   footer: {
     made: "Fait avec React + Tailwind",

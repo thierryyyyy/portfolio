@@ -13,8 +13,11 @@ function AppContent() {
   const { dir } = useI18n();
   return (
     <div className="min-h-screen bg-bg text-ink" dir={dir}>
+      <a href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[10000] focus:px-4 focus:py-2 focus:bg-orange focus:text-white focus:rounded-lg">
+        Aller au contenu principal
+      </a>
       <Cursor />
-      {/* Background decorations */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
         <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full"
           style={{ background: "radial-gradient(circle, rgba(255,95,31,.06) 0%, transparent 65%)" }} />
@@ -24,7 +27,7 @@ function AppContent() {
           style={{ background: "linear-gradient(to bottom, transparent, rgba(255,95,31,.1), transparent)" }} />
       </div>
       <Navbar />
-      <main>
+      <main id="main-content">
         <Hero />
         <Services />
         <Projects />
@@ -37,6 +40,4 @@ function AppContent() {
   );
 }
 
-export default function App() {
-  return <AppContent />;
-}
+export default AppContent;

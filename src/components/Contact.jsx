@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { PERSONAL } from "../data/config";
 import { useI18n } from "../i18n";
 import emailjs from "@emailjs/browser";
+
+const SENT_TIMEOUT_MS = 5000;
 
 export default function Contact() {
   const { t, dir } = useI18n();
@@ -10,15 +12,21 @@ export default function Contact() {
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const timerRef = useRef(null);
 
-  // Vos identifiants EmailJS
-  const EMAILJS_SERVICE_ID = "service_jm1q0pa";
-  const EMAILJS_TEMPLATE_ID = "template_ay73324";
-  const EMAILJS_PUBLIC_KEY = "nW_bgOvDeIIacSNlG";
+  const EMAILJS_SERVICE_ID = process.env.REACT_APP_EMAILJS_SERVICE_ID;
+  const EMAILJS_TEMPLATE_ID = process.env.REACT_APP_EMAILJS_TEMPLATE_ID;
+  const EMAILJS_PUBLIC_KEY = process.env.REACT_APP_EMAILJS_PUBLIC_KEY;
 
-  const onChange = e => setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  useEffect(() => {
+    return () => clearTimeout(timerRef.current);
+  }, []);
 
-  const onSubmit = async e => {
+  const onChange = useCallback((e) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  }, []);
+
+  const onSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
@@ -38,48 +46,48 @@ export default function Contact() {
         templateParams,
         EMAILJS_PUBLIC_KEY
       );
-      
+
       setSent(true);
       setForm({ name: "", email: "", subject: "", message: "" });
-      
-      // Réinitialiser l'état "envoyé" après 5 secondes
-      setTimeout(() => setSent(false), 5000);
+
+      timerRef.current = setTimeout(() => setSent(false), SENT_TIMEOUT_MS);
     } catch (err) {
-      console.error("Erreur EmailJS:", err);
-      setError("Erreur lors de l'envoi. Veuillez réessayer.");
+      console.error("EmailJS error:", err);
+      setError(t.contact.form_error);
     } finally {
       setLoading(false);
     }
   };
 
-  // 🔹 Ajout forcé du lien GitHub
   const socialLinks = {
     ...PERSONAL.social,
-    github: PERSONAL.social?.github || "https://github.com/thierryyyyy"
+    github: PERSONAL.social?.github || "https://github.com/thierryyyyy",
   };
 
   return (
     <section id="contact" className="border-t border-border bg-bg relative z-10">
       <div className="max-w-6xl mx-auto px-6 py-20">
-        {/* Header centered */}
         <div className="text-center mb-12">
           <p className="text-xs font-mono text-orange tracking-[.14em] uppercase mb-2">// {t.contact.tag}</p>
-          <h2 className="font-display text-4xl md:text-5xl font-bold text-ink tracking-tight"
-            dangerouslySetInnerHTML={{ __html: t.contact.title.replace(/ensemble|together|معاً/,
-              m => `<span style="color:var(--tw-color-orange, #FF5F1F)">${m}</span>`) }} />
+          <h2 className="font-display text-4xl md:text-5xl font-bold text-ink tracking-tight">
+            {t.contact.title.split(/(ensemble|together|معاً)/).map((part, i) =>
+              /ensemble|together|معاً/.test(part)
+                ? <span key={i} style={{ color: "var(--tw-color-orange, #FF5F1F)" }}>{part}</span>
+                : <span key={i}>{part}</span>
+            )}
+          </h2>
           <p className="mt-3 text-ink2 max-w-md mx-auto">{t.contact.subtitle}</p>
         </div>
 
         <div className="grid md:grid-cols-[auto_1fr] gap-10 items-start max-w-5xl mx-auto">
-          {/* Left info */}
           <div className="flex flex-col gap-3 md:w-64">
             <div className="bg-card border border-border rounded-2xl p-5">
               {[
-                { icon: "✉", type: t.contact.email_label, val: PERSONAL.email, href: `mailto:${PERSONAL.email}` },
-                { icon: "📍", type: t.contact.location_label, val: `${PERSONAL.location} · Remote OK` },
-                { icon: "⏱", type: t.contact.response_label, val: t.contact.response_value },
+                { icon: "\u2709", type: t.contact.email_label, val: PERSONAL.email, href: `mailto:${PERSONAL.email}` },
+                { icon: "\uD83D\uDCCD", type: t.contact.location_label, val: `${PERSONAL.location} \u00B7 Remote OK` },
+                { icon: "\u23F9", type: t.contact.response_label, val: t.contact.response_value },
               ].map((row, i, arr) => (
-                <a key={i} href={row.href || undefined}
+                <a key={row.type} href={row.href || undefined}
                   className={`flex items-center gap-3 py-2.5 text-sm ${i < arr.length - 1 ? "border-b border-border" : ""} ${row.href ? "hover:text-orange" : ""} transition-colors group`}>
                   <div className="w-8 h-8 flex-shrink-0 rounded-lg bg-orange/8 border border-orange/15 flex items-center justify-center text-sm group-hover:bg-orange/15 transition-colors">{row.icon}</div>
                   <div>
@@ -90,9 +98,8 @@ export default function Contact() {
               ))}
             </div>
 
-            {/* Available badge */}
             <div className="bg-card border border-emerald-500/20 rounded-2xl p-4 flex gap-3 items-start">
-              <div className="w-9 h-9 flex-shrink-0 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-base">🟢</div>
+              <div className="w-9 h-9 flex-shrink-0 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-base">{"\uD83D\uDFE2"}</div>
               <div>
                 <p className="text-sm font-semibold text-emerald-400 flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
@@ -102,26 +109,24 @@ export default function Contact() {
               </div>
             </div>
 
-            {/* Social */}
             <div className="grid grid-cols-3 gap-2">
               {Object.entries(socialLinks).map(([key, url]) => url && (
-                <a key={key} href={url} target="_blank" rel="noreferrer"
+                <a key={key} href={url} target="_blank" rel="noreferrer" aria-label={key}
                   className="bg-card border border-border rounded-xl p-3 flex flex-col items-center gap-1 hover:border-orange/35 hover:-translate-y-0.5 hover:shadow-card transition-all">
-                  <span className="text-lg">{key === "github" ? "📦" : key === "linkedin" ? "💼" : "🐦"}</span>
+                  <span className="text-lg">{key === "github" ? "\uD83D\uDCE6" : key === "linkedin" ? "\uD83D\uDCBC" : "\uD83D\uDC26"}</span>
                   <span className="text-[10px] font-mono text-ink3 capitalize">{key}</span>
                 </a>
               ))}
             </div>
           </div>
 
-          {/* Form */}
           <div className="relative bg-card border border-border rounded-2xl p-6 overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 pointer-events-none rounded-full"
               style={{ background: "radial-gradient(circle, rgba(255,95,31,.05), transparent 65%)" }} />
 
             {sent ? (
               <div className="py-12 flex flex-col items-center gap-4 text-center">
-                <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/25 flex items-center justify-center text-2xl">✓</div>
+                <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/25 flex items-center justify-center text-2xl">{"\u2713"}</div>
                 <h3 className="font-display text-xl font-bold text-ink">{f.sent_title}</h3>
                 <p className="text-sm text-ink3 max-w-xs">{f.sent_desc}</p>
                 <button onClick={() => setSent(false)}
@@ -135,10 +140,10 @@ export default function Contact() {
                   {[
                     { name: "name", label: f.name, ph: f.name_ph, type: "text" },
                     { name: "email", label: f.email, ph: f.email_ph, type: "email" },
-                  ].map(field => (
+                  ].map((field) => (
                     <div key={field.name}>
-                      <label className="block text-[10px] font-mono uppercase tracking-wider text-ink3 mb-1.5">{field.label}</label>
-                      <input name={field.name} type={field.type} value={form[field.name]} onChange={onChange} required
+                      <label htmlFor={`contact-${field.name}`} className="block text-[10px] font-mono uppercase tracking-wider text-ink3 mb-1.5">{field.label}</label>
+                      <input id={`contact-${field.name}`} name={field.name} type={field.type} value={form[field.name]} onChange={onChange} required
                         placeholder={field.ph}
                         className="w-full px-3.5 py-2.5 bg-bg3 border border-border2 rounded-xl text-sm text-ink placeholder-ink3/60 focus:outline-none focus:border-orange/50 focus:shadow-[0_0_0_3px_rgba(255,95,31,.08)] transition-all"
                         dir={dir} />
@@ -146,21 +151,21 @@ export default function Contact() {
                   ))}
                 </div>
                 <div>
-                  <label className="block text-[10px] font-mono uppercase tracking-wider text-ink3 mb-1.5">{f.subject}</label>
-                  <input name="subject" type="text" value={form.subject} onChange={onChange} required
+                  <label htmlFor="contact-subject" className="block text-[10px] font-mono uppercase tracking-wider text-ink3 mb-1.5">{f.subject}</label>
+                  <input id="contact-subject" name="subject" type="text" value={form.subject} onChange={onChange} required
                     placeholder={f.subject_ph}
                     className="w-full px-3.5 py-2.5 bg-bg3 border border-border2 rounded-xl text-sm text-ink placeholder-ink3/60 focus:outline-none focus:border-orange/50 focus:shadow-[0_0_0_3px_rgba(255,95,31,.08)] transition-all"
                     dir={dir} />
                 </div>
                 <div>
-                  <label className="block text-[10px] font-mono uppercase tracking-wider text-ink3 mb-1.5">{f.message}</label>
-                  <textarea name="message" value={form.message} onChange={onChange} required rows={4}
+                  <label htmlFor="contact-message" className="block text-[10px] font-mono uppercase tracking-wider text-ink3 mb-1.5">{f.message}</label>
+                  <textarea id="contact-message" name="message" value={form.message} onChange={onChange} required rows={4}
                     placeholder={f.message_ph}
                     className="w-full px-3.5 py-2.5 bg-bg3 border border-border2 rounded-xl text-sm text-ink placeholder-ink3/60 focus:outline-none focus:border-orange/50 focus:shadow-[0_0_0_3px_rgba(255,95,31,.08)] transition-all resize-none"
                     dir={dir} />
                 </div>
                 {error && (
-                  <p className="text-xs text-red-500 text-center">{error}</p>
+                  <p className="text-xs text-red-500 text-center" role="alert">{error}</p>
                 )}
                 <button type="submit" disabled={loading}
                   className="w-full py-3 bg-orange text-white text-sm font-semibold rounded-xl shadow-orange hover:bg-orange2 hover:shadow-orange-lg transition-all disabled:opacity-60 flex items-center justify-center gap-2">

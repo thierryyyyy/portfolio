@@ -87,20 +87,12 @@ const en = {
         metrics: [{ v: "GPS", l: "Geolocation" }, { v: "Multi", l: "Steps" }, { v: "100%", l: "Functional" }],
       },
       {
-        id: "stock",
+        id: "mndpt",
         subtitle: "Web · MNDPT Internship",
         title: "Stock Management",
         desc: "Web application for managing IT consumables and office supplies for the Ministry. Multi-level validation based on roles.",
         longDesc: "Developed during my internship at MNDPT (Aug–Nov 2024). Tracking material requests with hierarchical validation by roles, dashboards, and stock movement history.",
         metrics: [{ v: "Django", l: "Backend" }, { v: "MySQL", l: "Database" }, { v: "Multi", l: "Roles" }],
-      },
-      {
-        id: "bank",
-        subtitle: "Web · University Project",
-        title: "Banking Management",
-        desc: "Web application for managing banking operations — clients, accounts, transactions, and reporting.",
-        longDesc: "University project completed in 2022. Complete management of clients, current and savings accounts, transfers, deposits, withdrawals, and report generation.",
-        metrics: [{ v: "PHP", l: "Backend" }, { v: "MySQL", l: "DB" }, { v: "2022", l: "Year" }],
       },
       {
         id: "rotransport",
@@ -111,12 +103,12 @@ const en = {
         metrics: [{ v: "Python", l: "Backend" }, { v: "FastAPI", l: "API" }, { v: "2", l: "Methods" }],
       },
       {
-        id: "ranomafana",
-        subtitle: "Web · Personal Project",
-        title: "Ranomafana Park",
-        desc: "Showcase site for Ranomafana National Park — presentation of species, activities, and tourist information.",
-        longDesc: "First personal web project completed in 2021. Static showcase site presenting Ranomafana National Park (Madagascar), its endemic species, hiking activities, and practical information.",
-        metrics: [{ v: "HTML", l: "Frontend" }, { v: "CSS", l: "Design" }, { v: "2021", l: "Year" }],
+        id: "websockets-java",
+        subtitle: "Java \u00B7 Desktop Application",
+        title: "Websockets Java",
+        desc: "Client-server desktop application in Java with socket communication, connected/disconnected modes and XML storage.",
+        longDesc: "Java desktop application (Swing) with client-server architecture. TCP socket communication, SQLite database, connected and disconnected mode management (deferred sending via XML files), real-time network indicator and full CRUD on the CLIENT table.",
+        metrics: [{ v: "Java", l: "Backend" }, { v: "SQLite", l: "DB" }, { v: "Sockets", l: "Network" }],
       },
     ],
   },
@@ -202,6 +194,7 @@ const en = {
     response_value: "Within 24 hours",
     available_title: "Available",
     available_desc: "Open to internships, freelance projects, and opportunities.",
+    form_error: "Error sending message. Please try again.",
     form: {
       name: "Name",
       email: "Email",
@@ -218,6 +211,13 @@ const en = {
       new: "New message",
     },
   },
+
+  lang_switcher: {
+    auto_detect: "Browser auto-detection",
+  },
+
+  projects_private: "Private project / code not public",
+  screenshot_count: (n) => `${n} screenshot(s)`,
 
   footer: {
     made: "Made with React + Tailwind",

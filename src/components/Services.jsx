@@ -12,7 +12,7 @@ export default function Services() {
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {t.services.items.map((s, i) => (
-            <div key={i} className="group relative bg-card border border-border rounded-2xl p-6 overflow-hidden hover:border-orange/40 hover:-translate-y-1 hover:shadow-card transition-all">
+            <div key={s.title} className="group relative bg-card border border-border rounded-2xl p-6 overflow-hidden hover:border-orange/40 hover:-translate-y-1 hover:shadow-card transition-all">
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl"
                 style={{ background: "linear-gradient(135deg, rgba(255,95,31,.04), transparent)" }} />
               <div className="w-12 h-12 rounded-xl bg-orange/10 border border-orange/20 flex items-center justify-center text-2xl mb-5 group-hover:bg-orange/18 transition-colors">

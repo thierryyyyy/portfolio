@@ -1,6 +1,10 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { PERSONAL } from "../data/config";
 import { useI18n } from "../i18n";
+
+const TYPING_DELAY = 85;
+const DELETING_DELAY = 35;
+const PAUSE_BEFORE_DELETE_MS = 2000;
 
 function useTypewriter(strings) {
   const [text, setText] = useState("");
@@ -8,6 +12,7 @@ function useTypewriter(strings) {
   const [del, setDel] = useState(false);
   const [ci, setCi] = useState(0);
   const stringsRef = useRef(strings);
+  const innerTimerRef = useRef(null);
 
   useEffect(() => {
     stringsRef.current = strings;
@@ -19,14 +24,25 @@ function useTypewriter(strings) {
 
   useEffect(() => {
     const cur = stringsRef.current[idx % stringsRef.current.length];
-    const delay = del ? 35 : 85;
+    const delay = del ? DELETING_DELAY : TYPING_DELAY;
     const timer = setTimeout(() => {
-      if (!del && ci < cur.length) { setText(cur.slice(0, ci + 1)); setCi(c => c + 1); }
-      else if (!del && ci === cur.length) { setTimeout(() => setDel(true), 2000); }
-      else if (del && ci > 0) { setText(cur.slice(0, ci - 1)); setCi(c => c - 1); }
-      else { setDel(false); setIdx(i => (i + 1) % stringsRef.current.length); }
+      if (!del && ci < cur.length) {
+        setText(cur.slice(0, ci + 1));
+        setCi((c) => c + 1);
+      } else if (!del && ci === cur.length) {
+        innerTimerRef.current = setTimeout(() => setDel(true), PAUSE_BEFORE_DELETE_MS);
+      } else if (del && ci > 0) {
+        setText(cur.slice(0, ci - 1));
+        setCi((c) => c - 1);
+      } else {
+        setDel(false);
+        setIdx((i) => (i + 1) % stringsRef.current.length);
+      }
     }, delay);
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(innerTimerRef.current);
+    };
   }, [ci, del, idx]);
 
   return text;
@@ -37,22 +53,21 @@ export default function Hero() {
   const typed = useTypewriter(t.hero.typedStrings);
   const isRtl = dir === "rtl";
 
-  const go = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  const go = useCallback((id) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  }, []);
 
   const socialLinks = {
     ...PERSONAL.social,
-    github: PERSONAL.social.github || "https://github.com/thierryyyyy"
+    github: PERSONAL.social.github || "https://github.com/thierryyyyy",
   };
 
   return (
     <section id="hero" className="min-h-screen grid md:grid-cols-2 items-center pt-14 bg-bg relative overflow-hidden">
-      {/* Background glow circles */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full pointer-events-none"
         style={{ background: "radial-gradient(circle, rgba(255,95,31,.07) 0%, transparent 65%)" }} />
 
-      {/* ── LEFT / CONTENT ── */}
       <div className={`px-6 md:px-12 py-20 z-10 relative ${isRtl ? "text-right" : ""}`}>
-        {/* Greeting line */}
         <div className={`flex items-center gap-2 mb-5 opacity-0 animate-fade-up`}
           style={{ animationDelay: "0ms", justifyContent: isRtl ? "flex-end" : "flex-start" }}>
           <span className="w-6 h-px bg-orange flex-shrink-0" />
@@ -65,13 +80,11 @@ export default function Hero() {
           )}
         </div>
 
-        {/* Name */}
         <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold text-ink leading-[0.92] tracking-[-0.04em] opacity-0 animate-fade-up"
           style={{ animationDelay: "80ms" }}>
           {PERSONAL.name}
         </h1>
 
-        {/* Typed subtitle */}
         <div className="mt-4 h-10 flex items-center opacity-0 animate-fade-up"
           style={{ animationDelay: "200ms", justifyContent: isRtl ? "flex-end" : "flex-start" }}>
           <span className="text-xl md:text-2xl font-light text-ink2 tracking-tight">
@@ -80,17 +93,15 @@ export default function Hero() {
           </span>
         </div>
 
-        {/* Bio */}
         <p className="mt-6 text-base text-ink2 leading-relaxed max-w-md opacity-0 animate-fade-up"
           style={{ animationDelay: "280ms", marginInlineStart: isRtl ? "auto" : undefined }}>
           {t.hero.bio}
         </p>
 
-        {/* Social links */}
         <div className={`flex gap-2 mt-7 opacity-0 animate-fade-up flex-wrap`}
           style={{ animationDelay: "350ms", justifyContent: isRtl ? "flex-end" : "flex-start" }}>
           {Object.entries(socialLinks).map(([key, url]) => url && (
-            <a key={key} href={url} target="_blank" rel="noreferrer"
+            <a key={key} href={url} target="_blank" rel="noreferrer" aria-label={key}
               className="w-9 h-9 rounded-full border border-border2 bg-card flex items-center justify-center text-ink3 hover:border-orange hover:text-orange hover:shadow-orange transition-all">
               {key === "github" && <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>}
               {key === "linkedin" && <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>}
@@ -100,7 +111,6 @@ export default function Hero() {
           ))}
         </div>
 
-        {/* CTAs */}
         <div className={`flex flex-wrap gap-3 mt-8 opacity-0 animate-fade-up`}
           style={{ animationDelay: "430ms", justifyContent: isRtl ? "flex-end" : "flex-start" }}>
           <button onClick={() => go("contact")}
@@ -115,11 +125,10 @@ export default function Hero() {
           </a>
         </div>
 
-        {/* Stats */}
         <div className={`flex flex-wrap gap-0 mt-12 opacity-0 animate-fade-up bg-card border border-border rounded-2xl overflow-hidden w-fit`}
           style={{ animationDelay: "520ms", marginInlineStart: isRtl ? "auto" : undefined }}>
           {t.hero.stats.map((s, i) => (
-            <div key={i} className={`px-6 py-4 relative ${i < t.hero.stats.length - 1 ? "border-e border-border" : ""}`}>
+            <div key={s.label} className={`px-6 py-4 relative ${i < t.hero.stats.length - 1 ? "border-e border-border" : ""}`}>
               <p className="font-display text-2xl font-bold text-orange tracking-tight">{s.value}</p>
               <p className="text-xs text-ink3 mt-0.5 tracking-wide">{s.label}</p>
             </div>
@@ -127,20 +136,16 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* ── RIGHT / AVATAR SCENE ── */}
       <div className="hidden md:flex items-center justify-center relative z-10 py-16">
         <div className="relative w-[440px] h-[500px]">
-          {/* Availability badge */}
           <div className="absolute top-4 right-4 z-20 flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/25 rounded-full text-xs font-mono text-emerald-400">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
             {t.hero.available}
           </div>
 
-          {/* Glow */}
           <div className="absolute top-1/2 left-1/2 w-80 h-80 rounded-full pointer-events-none"
             style={{ transform: "translate(-50%,-50%)", background: "radial-gradient(circle, rgba(255,95,31,.12) 0%, rgba(255,95,31,.04) 40%, transparent 70%)", animation: "glowPulse 3s ease-in-out infinite" }} />
 
-          {/* Rotating rings */}
           <div className="absolute top-1/2 left-1/2 w-[340px] h-[340px] rounded-full border border-orange/15"
             style={{ transform: "translate(-50%,-50%)", animation: "ringRotate 20s linear infinite" }}>
             <div className="absolute top-2 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-orange"
@@ -149,22 +154,23 @@ export default function Hero() {
           <div className="absolute top-1/2 left-1/2 w-[400px] h-[400px] rounded-full border border-dashed border-orange/6"
             style={{ transform: "translate(-50%,-50%)", animation: "ringRotate 35s linear infinite reverse" }} />
 
-          {/* Avatar image */}
           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[300px] h-[430px] rounded-t-[1.5rem] border border-border overflow-hidden">
-            <img 
-              src="/profile.png" 
-              alt="Profile of Thierry"
+            <img
+              src="/profile.png"
+              alt="Photo de profil de Thierry"
+              width="300"
+              height="430"
+              loading="eager"
               className="w-full h-full object-cover object-top"
             />
           </div>
 
-          {/* Floating badges */}
           {[
-            { cls: "top-[12%] left-[-4%]", icon: "⚡", label: t.hero.badge_react, sub: t.hero.badge_react_sub, delay: "0s" },
-            { cls: "top-[38%] right-[-5%]", icon: "🚀", label: t.hero.badge_projects, sub: t.hero.badge_projects_sub, delay: "1.5s" },
-            { cls: "bottom-[20%] left-[-6%]", icon: "🏆", label: t.hero.badge_clients, sub: t.hero.badge_clients_sub, delay: "0.8s" },
-          ].map((b, i) => (
-            <div key={i} className={`absolute ${b.cls} flex items-center gap-2.5 bg-card border border-border2 rounded-xl px-3.5 py-2.5 shadow-card`}
+            { cls: "top-[12%] left-[-4%]", icon: "\u26A1", label: t.hero.badge_react, sub: t.hero.badge_react_sub, delay: "0s" },
+            { cls: "top-[38%] right-[-5%]", icon: "\uD83D\uDE80", label: t.hero.badge_projects, sub: t.hero.badge_projects_sub, delay: "1.5s" },
+            { cls: "bottom-[20%] left-[-6%]", icon: "\uD83C\uDFC6", label: t.hero.badge_clients, sub: t.hero.badge_clients_sub, delay: "0.8s" },
+          ].map((b) => (
+            <div key={b.label} className={`absolute ${b.cls} flex items-center gap-2.5 bg-card border border-border2 rounded-xl px-3.5 py-2.5 shadow-card`}
               style={{ animation: `float 4s ease-in-out ${b.delay} infinite` }}>
               <div className="w-8 h-8 rounded-lg bg-orange/10 border border-orange/20 flex items-center justify-center text-base">{b.icon}</div>
               <div>
