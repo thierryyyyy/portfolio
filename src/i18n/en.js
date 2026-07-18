@@ -118,6 +118,14 @@ const en = {
         longDesc: "Android mobile marketplace app for buying and selling items in Toliara (Tuleara, Madagascar). Complete UI/UX design on Figma with modern design, product categories, intuitive navigation and smooth purchase process.",
         metrics: [{ v: "Figma", l: "UI/UX Design" }, { v: "Android", l: "Mobile" }, { v: "Market", l: "Marketplace" }],
       },
+      {
+        id: "hibernate",
+        subtitle: "Web \u00B7 Master 1 Computer Science",
+        title: "Centre M\u00E9dical",
+        desc: "Web application for medical center management with Java, Hibernate and PostgreSQL. Full CRUD on doctors, patients and visits.",
+        longDesc: "Web application for medical center management built with Java Servlets, Hibernate ORM and PostgreSQL. Complete MVC architecture with CRUD operations on doctors, patients and visits. Interactive dashboard with Chart.js charts, search, success/error messages, and responsive design.",
+        metrics: [{ v: "Java", l: "Backend" }, { v: "Hibernate", l: "ORM" }, { v: "PostgreSQL", l: "Database" }],
+      },
     ],
   },
 

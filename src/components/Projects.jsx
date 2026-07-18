@@ -67,6 +67,22 @@ const PROJ_VISUALS = {
       "/projects/Tuléar-market/Tuléar-market (2).png",
     ],
   },
+  hibernate: {
+    bg: "linear-gradient(135deg,#1A1A0D,#2E2E1A)",
+    accent: "#EAB308",
+    icon: "\uD83D\uDDC4\uFE0F",
+    tags: ["Java", "Hibernate", "Servlet", "JSP", "PostgreSQL", "Tomcat", "Maven"],
+    live: null,
+    github: "https://github.com/thierryyyyy/Hibernate_java-training",
+    featured: false,
+    cat: "Web",
+    screenshots: [
+      "/projects/Hibernate/hibernate-java (1).png",
+      "/projects/Hibernate/hibernate-java (2).png",
+      "/projects/Hibernate/hibernate-java (3).png",
+      "/projects/Hibernate/hibernate-java (4).png",
+    ],
+  },
 };
 
 function Modal({ proj, vis, onClose }) {

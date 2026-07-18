@@ -27,6 +27,8 @@ export const SKILLS = [
   { name: "Django",        level: 4, category: "Backend"  },
   { name: "Node.js",       level: 3, category: "Backend"  },
   { name: "Express.js",    level: 3, category: "Backend"  },
+  { name: "Java",          level: 4, category: "Backend"  },
+  { name: "Hibernate",     level: 4, category: "Backend"  },
   { name: "PHP",           level: 3, category: "Backend"  },
   { name: "Python",        level: 4, category: "Backend"  },
   { name: "API REST",      level: 4, category: "Backend"  },

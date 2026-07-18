@@ -118,6 +118,14 @@ const ar = {
         longDesc: "تطبيق سوق على أندرويد للبيع وإعادة بيع المنتجات في توليار (مدغشقر). تصميم UI/UX كامل على Figma بتصميم عصري، فئات المنتجات، تنقل سلس وعملية شراء مريحة.",
         metrics: [{ v: "Figma", l: "تصميم UI/UX" }, { v: "Android", l: "موبايل" }, { v: "Market", l: "سوق" }],
       },
+      {
+        id: "hibernate",
+        subtitle: "ويب · ماستر 1 معلوماتية",
+        title: "Centre Médical",
+        desc: "تطبيق ويب لإدارة المراكز الطبية بـ Java وHibernate وPostgreSQL. CRUD كامل على الأطباء والمرضى والزيارات.",
+        longDesc: "تطبيق ويب لإدارة المراكز الطبية مبني بـ Java Servlets وHibernate ORM وPostgreSQL. بنية MVC متكاملة مع عمليات CRUD على الأطباء والمرضى والزيارات. لوحة معلومات تفاعلية مع رسوم بيانية Chart.js، بحث، رسائل نجاح/خطأ، وتصميم متجاوب.",
+        metrics: [{ v: "Java", l: "الخلفية" }, { v: "Hibernate", l: "ORM" }, { v: "PostgreSQL", l: "قاعدة البيانات" }],
+      },
     ],
   },
 
